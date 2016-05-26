@@ -27,7 +27,7 @@
  * Helper function to get the settings.
  */
 function search_config_node_settings() {
-  $settings = variable_get('search_config', array());
+  $settings = \Drupal::state()->get('search_config') ?: array();
   $settings += array(
     'forms' => array(),
     'fields' => array(),
