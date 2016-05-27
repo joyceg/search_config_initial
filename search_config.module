@@ -148,7 +148,7 @@ function search_config_permission() {
  * Implements of hook_query_node_access_alter().
  */
 function search_config_query_node_access_alter(QueryAlterableInterface $query) {
-  global $user;
+  $user = \Drupal::currentUser();
   // Provides a tag option to bypass any changes.
   if ($query->hasTag('bypass_search_configuration')) {
     return;
@@ -167,10 +167,10 @@ function search_config_query_node_access_alter(QueryAlterableInterface $query) {
   if ($node && $search) {
     // Only conditionally restrict the query if not admin (user.uid = 1).
     if ($user->uid != 1) {
-      if (!user_access('search all content')) {
+      if (!\Drupal::currentUser()->hasPermission('search all content')) {
         $excluded_content_types = array();
         foreach (search_config_content_types() as $type => $label) {
-          if (!user_access("search $type content")) {
+          if (!\Drupal::currentUser()->hasPermission("search $type content")) {
             $excluded_content_types[] = $type;
           }
         }
@@ -186,7 +186,7 @@ function search_config_query_node_access_alter(QueryAlterableInterface $query) {
         }
       }
 
-      if (!user_access('search all excluded entities')) {
+      if (!\Drupal::currentUser()->hasPermission('search all excluded entities')) {
         // Join into the {} table to see if it is excluded.
         $query->leftJoin('search_config_exclude', 'sc', $node .'.nid = sc.entity_id AND sc.entity_type = :type', array(':type' => 'node'));
         $query->isNull('sc.entity_id');
@@ -282,7 +282,7 @@ function search_config_content_types() {
  *   An additional array of roles to overrule the main flag
  */
 function search_config_get_access($remove, $grant) {
-  global $user;
+  $user = \Drupal::currentUser();
   if ($remove) {
     return (bool) array_intersect_key($user->roles, array_filter($grant));
   }
@@ -305,7 +305,7 @@ function search_config_get_roles_by_permission($permission) {
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function search_config_form_node_form_alter(&$form, $form_state) {
-  if (!user_access('admin node search exlusions')) {
+  if (!\Drupal::currentUser()->hasPermission('admin node search exlusions')) {
     return;
   }
 
