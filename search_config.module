@@ -82,7 +82,7 @@ function search_config_node_settings() {
 }
 
 function search_config_string_overrides($key = NULL) {
-  $overrides = variable_get('search_config_string_overrides', array());
+  $overrides = \Drupal::config('search_config.settings')->get('search_config_string_overrides');
   $overrides += array(
     'labels' => array(
       'basic' => '',
