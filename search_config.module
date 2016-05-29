@@ -150,7 +150,7 @@ function search_config_permission() {
 function search_config_query_node_access_alter(QueryAlterableInterface $query) {
   $user = \Drupal::currentUser();
   // Provides a tag option to bypass any changes.
-  if ($query->hasTag('bypass_search_configuration')) {
+  if ($user->uid == 1) {
     return;
   }
   $search = FALSE;
