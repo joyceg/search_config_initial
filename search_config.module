@@ -338,14 +338,14 @@ function search_config_form_node_form_alter(&$form, $form_state) {
  *
  * Inserts the excluded flag for both node insert and update hooks.
  */
-function search_config_node_insert($node) {
+function search_config_node_insert(\Drupal\node\NodeInterface $node) {
   if (!empty($node->search_config_exclude)) {
     $record = array(
       'entity_type' => 'node',
-      'entity_id' => $node->nid,
+      'entity_id' => $node->id(),
       'exclude' => 1,
     );
-    drupal_write_record('search_config_exclude', $record);
+    \Drupal::database()->insert('search_config_exclude')->fields($record)->execute();
   }
 }
 
