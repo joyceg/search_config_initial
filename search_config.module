@@ -27,7 +27,7 @@
  * Helper function to get the settings.
  */
 function search_config_node_settings() {
-  $settings = \Drupal::state()->get('search_config') ?: array();
+  $settings = \Drupal::config(search_config)->get(array());
   $settings += array(
     'forms' => array(),
     'fields' => array(),
@@ -261,8 +261,8 @@ function search_config_form_search_admin_settings_alter(&$form, $form_state) {
  * Additional submit handler to save the additional fields added by the form alter.
  */
 function search_config_search_admin_settings_alter(&$form, $form_state) {
-  \Drupal::state()->set('search_config_string_overrides', $form_state['values']['search_config_string_overrides']);
-  \Drupal::state()->set('search_config', $form_state['values']['content_node_search_config']);
+  \Drupal::service('config.factory')->getEditable('search_config.settings')->set('search_config_string_overrides', $form_state['values']['search_config_string_overrides'])->save();
+  \Drupal::service('config.factory')->getEditable('search_config.settings')->set('search_config', $form_state['values']['content_node_search_config'])->save();
 }
 
 /**
