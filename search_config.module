@@ -1,1 +1,13 @@
 <?php
+
+/*
+ * Helper function for the installation of the module
+ */
+
+function search_config_get_roles_by_permission($permission) {
+  return db_select('role_permission', 'p')
+            ->fields('p', array('rid'))
+            ->condition('permission', $permission)
+            ->execute()
+            ->fetchCol();
+}
