@@ -36,3 +36,21 @@ function search_config_schema() {
 
   return $schema;
 }
+
+/*
+ * Implements hook_install()
+ */
+function search_config_install()  {
+
+  module_load_include('module','serach_config');
+  $insert = db_insert('role_permission')->fields(array('rid', 'permission'));
+  foreach (array(\Drupal\Core\Session\AccountInterface::ANONYMOUS_ROLE, \Drupal\Core\Session\AccountInterface::AUTHENTICATED_RID) as $rid) {
+    if (!search_config_get_roles_by_permission($rid, 'search all content')) {
+          $insert->values(array(
+            'rid' => $rid,
+            'permission' => 'search all content',
+          ));
+        }
+      }
+      $insert->execute();
+    }
