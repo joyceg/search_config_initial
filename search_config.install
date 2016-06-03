@@ -54,5 +54,5 @@ function search_config_install()  {
       }
       $insert->execute();
       $settings = search_config_node_settings();
-      \Drupal::config('search_config.settings')->set('search_config')->save();
+      variable_set('search_config', $settings);
     }
