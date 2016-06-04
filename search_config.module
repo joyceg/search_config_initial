@@ -70,7 +70,6 @@ function search_config_node_settings() {
   return $settings;
 }
 
-
 /**
  * Implements hook_permission()
  */
@@ -103,4 +102,42 @@ function search_config_permission() {
  */
 function search_config_content_types()  {
   return array_map('check_plain', node_type_get_names());
+}
+
+/**
+ * Helper function to get the settings
+ */
+function search_config_string_overrides($key = NULL) {
+  $overrides = \Drupal::config('search_config.settings')->get('search_config_string_overrides');
+  $overrides += array(
+    'labels' => array(
+      'basic' => '',
+      'basic_with_keys' => '',
+      'basic_submit' => '',
+      'advanced_fieldset' => '',
+      'advanced_fieldset_with_keys' => '',
+      'advanced_any' => '',
+      'advanced_phrase' => '',
+      'advanced_none' => '',
+      'advanced_type' => '',
+      'advanced_language' => '',
+      'advanced_submit' => '',
+    ),
+    'title_display' => array(
+      'basic' => 'default',
+      'advanced_any' => 'default',
+      'advanced_phrase' => 'default',
+      'advanced_none' => 'default',
+      'advanced_type' => 'default',
+      'advanced_language' => 'default',
+    ),
+    'menu' => array(
+      'node' => '',
+      'user' => '',
+    ),
+  );
+  if (isset($key)) {
+    return array_filter($overrides[$key]);
+  }
+  return $overrides;
 }

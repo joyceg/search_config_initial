@@ -12,3 +12,4 @@ language: ''
 limit: 10
 admin_bypass: 1
 remove_advanced: 0
+search_config_string_overrides: []
