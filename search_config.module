@@ -96,3 +96,10 @@ function search_config_permission() {
   }
   return $permissions;
 }
+
+/**
+ * Helper function to get an array of safe to use content type names 
+ */
+function search_config_content_types()  {
+  return array_map('check_plain', node_type_get_names());
+}
