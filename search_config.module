@@ -149,7 +149,18 @@ function search_config_theme()  {
   return array(
     'search_config_admin_label_form' => array(
       'render element' => 'form',
-      'template' => 'templates/search-config-admin-labels-form'
+      'template' => 'templates/ '
       ),
     );
+}
+
+/**
+ * Implements hook_node_search_results().
+ *
+ * The only reason for this hook is to record if there are any active
+ * search results found.
+ */
+function search_config_node_search_result($node) {
+  global $search_config_node_results;
+  $search_config_node_results [$node->nid] = $node->nid;
 }
